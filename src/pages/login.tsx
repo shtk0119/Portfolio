@@ -69,7 +69,9 @@ const Login = () => {
 
           <Box mt='32px' textAlign='center'>
             <Typography fontSize='14px' color='primary'>
-              <Link href='/signup' passHref><a>アカウントを作成</a></Link>
+              <Link href='/signup' passHref>
+                <a>アカウントを作成</a>
+              </Link>
             </Typography>
           </Box>
         </Box>
