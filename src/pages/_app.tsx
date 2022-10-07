@@ -1,3 +1,4 @@
+import '../styles/globals.css';
 import { useState } from 'react';
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
@@ -15,7 +16,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       mode: isDarkMode ? 'dark' : 'light',
       background: {
         default: '#f1f1f1'
-      }
+      },
     }
   });
 
