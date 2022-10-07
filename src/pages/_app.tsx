@@ -12,7 +12,10 @@ const App = ({ Component, pageProps }: AppProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const theme = createTheme({
     palette: {
-      mode: isDarkMode ? 'dark' : 'light'
+      mode: isDarkMode ? 'dark' : 'light',
+      background: {
+        default: '#f1f1f1'
+      }
     }
   });
 
