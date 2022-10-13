@@ -22,7 +22,7 @@ const CustomAppBar = styled(AppBar)({
   margin: '0 auto',
 });
 
-const Top: NextPage = () => {
+const Home: NextPage = () => {
   return (
     <Box>
       <CustomAppBar>
@@ -195,4 +195,4 @@ const Top: NextPage = () => {
   )
 }
 
-export default Top;
+export default Home;
