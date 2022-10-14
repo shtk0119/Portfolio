@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import { 
   AppBar,
   Box, 
+  Button, 
   Grid, 
   List, 
   ListItem, 
@@ -11,6 +12,9 @@ import {
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
+import dynamic from 'next/dynamic'
+
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 const CustomAppBar = styled(AppBar)({
   width: '1024px',
@@ -52,6 +56,11 @@ const Home: NextPage = () => {
               <br/>
               引越しが Smart に管理できるアプリ！
             </Typography>
+
+            <Box marginTop='32px'>
+              <Button variant='contained'>はじめる！</Button>
+            </Box>
+
           </Box>
           <Box position='relative' height='480px' width='330px' >
             <Image src='/moving_main_image_pc.png' layout='fill' alt='logo' />
@@ -77,7 +86,7 @@ const Home: NextPage = () => {
                     </ListItem>
                   </List>
                 </Box>
-                <Box width='300px' bgcolor='red'></Box>
+                <ReactPlayer url='https://vimeo.com/760205815/c5f3999f87' />
               </Box>
 
               <Box display='flex' justifyContent='space-around' flexDirection='row-reverse' marginTop='64px'>
@@ -95,7 +104,7 @@ const Home: NextPage = () => {
                     </ListItem>
                   </List>
                 </Box>
-                <Box width='300px' bgcolor='red'></Box>
+                <ReactPlayer url='https://vimeo.com/760205815/c5f3999f87' />
               </Box>
 
               <Box display='flex' justifyContent='space-around' marginTop='64px'>
@@ -109,10 +118,10 @@ const Home: NextPage = () => {
                     </ListItem>
                   </List>
                 </Box>
-                <Box width='300px' bgcolor='red'></Box>
+                <ReactPlayer url='https://vimeo.com/760205815/c5f3999f87' />
               </Box>
 
-              <Box display='flex' justifyContent='space-around' flexDirection='row-reverse' marginTop='64px'>
+              {/* <Box display='flex' justifyContent='space-around' flexDirection='row-reverse' marginTop='64px'>
                 <Box minWidth='500px' maxWidth='500px'>
                   <Typography textAlign='center'>その他機能</Typography>
                   <List>
@@ -128,8 +137,8 @@ const Home: NextPage = () => {
                     </ListItem>
                   </List>
                 </Box>
-                <Box width='300px' bgcolor='red'></Box>
-              </Box>
+                <ReactPlayer url='https://vimeo.com/760205815/c5f3999f87' />
+              </Box> */}
             </Box>
           </Box>
         </Box>
