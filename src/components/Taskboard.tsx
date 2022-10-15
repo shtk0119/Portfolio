@@ -12,7 +12,6 @@ import {
   Divider, 
   IconButton, 
   Input, 
-  InputAdornment, 
   List, 
   Modal, 
   Toolbar, 
@@ -159,7 +158,7 @@ const Taskboard = () => {
               sx={{
                 height: '720px', 
                 minWidth: '360px',
-                overflow: 'scroll', // ヘッダーの部分は固定したい
+                overflow: 'scroll', // ヘッダーの部分を固定したい
               }}
             >
               <CardHeader 
@@ -173,15 +172,6 @@ const Taskboard = () => {
               />
               <Divider />
               <Box>
-                {todos.map((text, index) => {
-                  return (
-                    <Box key={index} margin='16px 16px 0 16px'>
-                      <Card sx={{ bgcolor: 'red', height: '100px', padding: '16px' }}>
-                        <Typography>{text}</Typography>
-                      </Card>
-                    </Box>
-                  )
-                })} 
               </Box>
             </Card>
 
@@ -189,7 +179,7 @@ const Taskboard = () => {
               sx={{
                 height: '720px', 
                 minWidth: '360px',
-                overflow: 'scroll', // ヘッダーの部分は固定したい
+                overflow: 'scroll', // ヘッダーの部分を固定したい
               }}
             >
               <CardHeader 
@@ -215,6 +205,7 @@ const Taskboard = () => {
                 )
               })}
               
+              {/* モーダルのTodo の内容が上手く表示できない為修正必須 */}
               <Modal
                 open={cardOpen}
                 onClose={toggleModal}
@@ -276,7 +267,7 @@ const Taskboard = () => {
               sx={{
                 height: '720px', 
                 minWidth: '360px',
-                overflow: 'scroll', // ヘッダーの部分は固定したい
+                overflow: 'scroll', // ヘッダーの部分を固定したい
               }}
             >
               <CardHeader 
