@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
+import { AccountCircle, ChevronLeft, Menu } from '@mui/icons-material';
 import { 
   Box, 
   Card, 
-  CardContent, 
   CardHeader, 
   CssBaseline, 
   Divider, 
@@ -14,11 +14,6 @@ import {
   Toolbar, 
   Typography 
 } from '@mui/material';
-import { 
-  AccountCircle, 
-  ChevronLeft, 
-  Menu 
-} from '@mui/icons-material';
 import { ListItems } from './ListItems';
 
 const drawerWidth: number = 240;
