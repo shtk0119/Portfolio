@@ -4,6 +4,9 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import { 
   Box, 
+  Card, 
+  CardContent, 
+  CardHeader, 
   CssBaseline, 
   Divider, 
   IconButton, 
@@ -144,6 +147,76 @@ const Taskboard = () => {
           }}
         >
           <Toolbar />
+
+          <Box display='flex' justifyContent='space-around' marginTop='36px'>
+            <Card 
+              sx={{
+                height: '720px', 
+                minWidth: '360px',
+                overflow: 'scroll', // ヘッダーの部分は固定したい
+              }}
+            >
+              <CardHeader 
+                sx={{ 
+                  height: '72px', 
+                  '& .MuiCardHeader-title': { 
+                    fontWeight: 'bold' 
+                  },
+                }} 
+                title='予定' 
+              />
+              <Divider />
+              <Box>
+                {['test1', 'test2', 'test3', 'test4', 'test5', 'test6'].map((text, index) => {
+                  return (
+                    <Box key={index} padding='0 16px' marginTop='16px'>
+                      <Card sx={{ bgcolor: 'red', height: '100px', padding: '16px' }}>
+                        <Typography>{text}</Typography>
+                      </Card>
+                    </Box>
+                  )
+                })} 
+              </Box>
+            </Card>
+
+            <Card 
+              sx={{
+                height: '720px', 
+                minWidth: '360px',
+                overflow: 'scroll', // ヘッダーの部分は固定したい
+              }}
+            >
+              <CardHeader 
+                sx={{ 
+                  height: '72px', 
+                  '& .MuiCardHeader-title': { 
+                    fontWeight: 'bold' 
+                  },
+                }} 
+                title='作業中' 
+              />
+              <Divider />
+            </Card>
+
+            <Card 
+              sx={{
+                height: '720px', 
+                minWidth: '360px',
+                overflow: 'scroll', // ヘッダーの部分は固定したい
+              }}
+            >
+              <CardHeader 
+                sx={{ 
+                  height: '72px', 
+                  '& .MuiCardHeader-title': { 
+                    fontWeight: 'bold' 
+                  },
+                }} 
+                title='完了' 
+              />
+              <Divider />
+            </Card>
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>
