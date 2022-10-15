@@ -2,15 +2,19 @@ import { useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
-import { AccountCircle, ChevronLeft, Menu } from '@mui/icons-material';
+import { AccountCircle, ChevronLeft, Menu, Send } from '@mui/icons-material';
 import { 
+  Avatar,
   Box, 
   Card, 
   CardHeader, 
   CssBaseline, 
   Divider, 
   IconButton, 
+  Input, 
+  InputAdornment, 
   List, 
+  Modal, 
   Toolbar, 
   Typography 
 } from '@mui/material';
@@ -73,6 +77,13 @@ const Taskboard = () => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  
+  const [cardOpen, setCardOpen] = useState(false);
+  const toggleModal = () => {
+    setCardOpen(!cardOpen)
+  }
+
+  const [todos, setTodos] = useState(['test1', 'test2', 'test3', 'test4', 'test5', 'test6']);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -162,9 +173,9 @@ const Taskboard = () => {
               />
               <Divider />
               <Box>
-                {['test1', 'test2', 'test3', 'test4', 'test5', 'test6'].map((text, index) => {
+                {todos.map((text, index) => {
                   return (
-                    <Box key={index} padding='0 16px' marginTop='16px'>
+                    <Box key={index} margin='16px 16px 0 16px'>
                       <Card sx={{ bgcolor: 'red', height: '100px', padding: '16px' }}>
                         <Typography>{text}</Typography>
                       </Card>
@@ -191,6 +202,74 @@ const Taskboard = () => {
                 title='作業中' 
               />
               <Divider />
+
+              {todos.map((text, index) => {
+                return (
+                  <Box key={index}>
+                    <Box margin='16px' onClick={toggleModal}>
+                      <Card sx={{ bgcolor: 'red', height: '100px', padding: '16px' }}>
+                        <Typography>{text}</Typography>
+                      </Card>
+                    </Box>
+                  </Box>
+                )
+              })}
+              
+              <Modal
+                open={cardOpen}
+                onClose={toggleModal}
+              >
+                <Box 
+                  sx={{ 
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: '(-50%, -50%)', 
+                    WebkitTransform: 'translate(-50%, -50%)', 
+                    msTransform: 'translate(-50%, -50%)' 
+                  }} 
+                  bgcolor='white' 
+                  height='720px' 
+                  width='420px' 
+                  padding='16px'
+                  borderRadius='10px'
+                >
+                  <Typography variant="h4" component="h2">
+                    text1
+                  </Typography>
+                  <Divider />
+                  <Box>
+                    <Box height='300px' marginTop='16px'>
+                      <Typography variant='h6'>詳細</Typography>
+                    </Box>
+                    <Divider />
+                    <Box height='300px' marginTop='16px' position='relative'>
+                      <Typography variant='h6'>メモ</Typography>
+                      <Box position='absolute' bottom='0' display='flex' width='100%'>
+                        <Avatar />
+                        <Box width='90%' display='flex'>
+                          <Input
+                            sx={{ 
+                              width: '100%',
+                              paddingLeft: '12px', 
+                              marginLeft: '16px',
+                              border: '1px solid',
+                              borderRadius: '10px',
+                            }} 
+                            disableUnderline
+                            placeholder='コメントを入力'
+                            endAdornment={
+                              <IconButton>
+                                <Send />
+                              </IconButton>
+                            }
+                          />
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Modal>
             </Card>
 
             <Card 
