@@ -1,17 +1,12 @@
 import Header from "../components/Header";
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import { Box } from "@mui/material";
-
-
-const mdTheme = createTheme();
+import { Box, CssBaseline } from "@mui/material";
 
 const Test = () => {
   return (
-    // <ThemeProvider theme={mdTheme}>
-      <Box display='flex'>
-        <Header title={'タスクボード'}/>
-      </Box>
-    // {/* </ThemeProvider> */}
+    <Box display='flex'>
+      <CssBaseline />
+      <Header title={'タスクボード'}/>
+    </Box>
   )
 }
 

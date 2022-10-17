@@ -56,15 +56,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const Header = ({ title }: { title: string }) => {
-  const [menuOpen, setMenuOpen] = React.useState<boolean>(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popper' : undefined;
+  const popOpen = Boolean(anchorEl);
 
   const toggleDrawer = () => {
-    setMenuOpen(!open);
-    console.log(menuOpen);
-  }
+    setOpen(!open);
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -75,19 +73,18 @@ const Header = ({ title }: { title: string }) => {
       <AppBar color='default' open={open} sx={{ boxShadow: 'none' }}>
         <Toolbar sx={{ backgroundColor: '#fff', borderBottom: '1px solid #00000033' }}>
           <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleDrawer}
+            sx={{
+              marginRight: '36px',
+              ...(open && { display: 'none' }),
+            }}
+          >
             <Menu />
           </IconButton>
-
-          <Typography variant='h6' fontWeight='bold' noWrap>
+          <Typography variant="h6" fontWeight='bold' noWrap flexGrow={1}>
             {title}
           </Typography>
 
@@ -95,66 +92,66 @@ const Header = ({ title }: { title: string }) => {
             <AccountCircle />
           </IconButton>
 
-          <Popper id={id} open={open} anchorEl={anchorEl}>
+          <Popper open={popOpen} anchorEl={anchorEl}>
             <Box mt={2} bgcolor='#fff' border={1} borderColor='#00000033' borderRadius={2}>
-              <List disablePadding sx={{ textAlign: 'left' }}>
-                <ListItem>
-                  {/* ユーザーの画像機能が実装できたら下記 icon をユーザーが設定画像に変えられるようにする */}
-                  <Avatar />
-                  <Box ml={2}>
-                    {/* 下記 2行の中身は、ユーザー機能実装後 */}
-                    <Typography>takanori</Typography> 
-                    <Typography>demo.demo@demo.com</Typography>
-                  </Box>
-                </ListItem>
-                <Divider />
-                <ListItem disablePadding>
-                  <Link href='#' underline='none' color='default' width='100%'>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <Person />
-                      </ListItemIcon>
-                      <ListItemText primary='プロフィール' />
-                    </ListItemButton>
-                  </Link>
-                </ListItem>
-                <Divider />
-                <ListItem disablePadding>
-                  <Link href='#' underline='none' color='default' width='100%'>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <Settings />
-                      </ListItemIcon>
-                      <ListItemText primary='アカウント' />
-                    </ListItemButton>
-                  </Link>
-                </ListItem>
-                <Divider />
-                <ListItem disablePadding>
-                  <Link href='#' underline='none' color='default' width='100%'>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <Logout />
-                      </ListItemIcon>
-                      <ListItemText primary='ログアウト' />
-                    </ListItemButton>
-                  </Link>
-                </ListItem>
-              </List>
+                <List disablePadding>
+                  <ListItem>
+                    {/* ユーザーの画像機能が実装できたら下記 icon をユーザーが設定画像に変えられるようにする */}
+                    <Avatar />
+                    <Box ml={2}>
+                      {/* 下記 2行の中身は、ユーザー機能実装後 */}                
+                      <Typography>takanori</Typography>
+                      <Typography>demo.demo@demo.com</Typography>
+                    </Box>
+                  </ListItem>
+                  <Divider />
+                  <ListItem disablePadding>
+                    <Link href='#' underline='none' color='default' width='100%'>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <Person />
+                        </ListItemIcon>
+                        <ListItemText primary='プロフィール' />
+                      </ListItemButton>
+                    </Link>
+                  </ListItem>
+                  <Divider />
+                  <ListItem disablePadding>
+                    <Link href='#' underline='none' color='default' width='100%'>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <Settings />
+                        </ListItemIcon>
+                        <ListItemText primary='アカウント' />
+                      </ListItemButton>
+                    </Link>
+                  </ListItem>
+                  <Divider />
+                  <ListItem disablePadding>
+                    <Link href='#' underline='none' color='default' width='100%'>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <Logout />
+                        </ListItemIcon>
+                        <ListItemText primary='ログアウト' />
+                      </ListItemButton>
+                    </Link>
+                  </ListItem>
+                </List>
             </Box>
           </Popper>
         </Toolbar>
       </AppBar>
-
-      <Drawer variant='permanent' open={menuOpen}>
-        <Toolbar 
-          sx={{ 
+      
+      <Drawer variant='permanent' open={open}>
+        <Toolbar
+          sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
             px: [1],
             borderBottom: '1px solid #00000033',
-            }}
+          }}
         >
           <IconButton onClick={toggleDrawer}>
             <ChevronLeft />
@@ -164,20 +161,19 @@ const Header = ({ title }: { title: string }) => {
           {ListItems}
         </List>
       </Drawer>
-
+      
       <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-          }}
-        >
-        <Toolbar />
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          flexGrow: 1,
+          height: '100vh',
+          overflow: 'auto',
+        }}
+      >
       </Box>
     </>
   )
