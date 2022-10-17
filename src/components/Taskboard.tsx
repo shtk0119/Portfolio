@@ -186,7 +186,6 @@ const Taskboard = () => {
                 </Box>
               </Box>
             </Popper>
-
           </Toolbar>
         </AppBar>
         

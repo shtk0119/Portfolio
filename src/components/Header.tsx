@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Avatar, Box, Divider, Drawer, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Popper, styled, Toolbar, Typography } from '@mui/material';
+import { Avatar, Box, Divider, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Popper, styled, Toolbar, Typography } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import MuiDrawer from '@mui/material/Drawer';
 import { AccountCircle, ChevronLeft, Logout, Menu, Person, Settings } from '@mui/icons-material';
 import { ListItems } from './ListItems';
 
@@ -28,6 +29,32 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    '& .MuiDrawer-paper': {
+      position: 'relative',
+      whiteSpace: 'nowrap',
+      width: drawerWidth,
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      boxSizing: 'border-box',
+      ...(!open && {
+        overflowX: 'hidden',
+        transition: theme.transitions.create('width', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        width: theme.spacing(7),
+        [theme.breakpoints.up('sm')]: {
+          width: theme.spacing(9),
+        },
+      }),
+    },
+  }),
+);
+
 const Header = ({ title }: { title: string }) => {
   const [menuOpen, setMenuOpen] = React.useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -36,6 +63,7 @@ const Header = ({ title }: { title: string }) => {
 
   const toggleDrawer = () => {
     setMenuOpen(!open);
+    console.log(menuOpen);
   }
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -47,19 +75,19 @@ const Header = ({ title }: { title: string }) => {
       <AppBar color='default' open={open} sx={{ boxShadow: 'none' }}>
         <Toolbar sx={{ backgroundColor: '#fff', borderBottom: '1px solid #00000033' }}>
           <IconButton
-            edge='start'
-            color='inherit'
-            aria-label='open drawer'
-            onClick={toggleDrawer}
-            sx={{
-              marginRight: '36px',
-              ...(open && { display: 'none' })
-            }}
-          >
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: '36px',
+                ...(open && { display: 'none' }),
+              }}
+            >
             <Menu />
           </IconButton>
 
-          <Typography variant='h6' fontWeight='bold'>
+          <Typography variant='h6' fontWeight='bold' noWrap>
             {title}
           </Typography>
 
@@ -126,7 +154,8 @@ const Header = ({ title }: { title: string }) => {
             justifyContent: 'flex-end',
             px: [1],
             borderBottom: '1px solid #00000033',
-            }}>
+            }}
+        >
           <IconButton onClick={toggleDrawer}>
             <ChevronLeft />
           </IconButton>
@@ -135,6 +164,21 @@ const Header = ({ title }: { title: string }) => {
           {ListItems}
         </List>
       </Drawer>
+
+      <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+        <Toolbar />
+      </Box>
     </>
   )
 }
