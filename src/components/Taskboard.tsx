@@ -2,7 +2,14 @@ import { useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
-import { AccountCircle, ChevronLeft, Menu, Send } from '@mui/icons-material';
+import { 
+  AccountCircle, 
+  ChevronLeft, 
+  Logout, 
+  ManageAccounts, 
+  Menu, 
+  Send 
+} from '@mui/icons-material';
 import { 
   Avatar,
   Box, 
@@ -12,8 +19,13 @@ import {
   Divider, 
   IconButton, 
   Input, 
+  Link, 
   List, 
+  ListItemButton, 
+  ListItemIcon, 
+  ListItemText, 
   Modal, 
+  Popper, 
   Toolbar, 
   Typography 
 } from '@mui/material';
@@ -72,23 +84,31 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 const Taskboard = () => {
+  const [todos, setTodos] = useState(['test1', 'test2', 'test3', 'test4', 'test5', 'test6']);
+
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const aopen = Boolean(anchorEl);
+  const aid = aopen ? 'simple-popper' : undefined;
+
+  const toggleUserMenu = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  }
   
   const [cardOpen, setCardOpen] = useState(false);
   const toggleModal = () => {
-    setCardOpen(!cardOpen)
-  }
-
-  const [todos, setTodos] = useState(['test1', 'test2', 'test3', 'test4', 'test5', 'test6']);
+    setCardOpen(!cardOpen);
+  };
 
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar color='default' position="absolute" open={open}>
+        <AppBar color='default' open={open}>
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -116,11 +136,58 @@ const Taskboard = () => {
             >
               タスクボード
             </Typography>
-            <IconButton color="inherit">
+
+            <IconButton color="inherit" onClick={toggleUserMenu}>
               <AccountCircle />
             </IconButton>
+
+            <Popper id={aid} open={aopen} anchorEl={anchorEl}>
+              <Box 
+                sx={{ 
+                  border: 1,
+                  borderColor: 'rgba(0, 0, 0, 0.2)',
+                  borderRadius: 2, 
+                  p: 1, 
+                  mt: 2, 
+                  bgcolor: 'background.paper' 
+                }}
+              >
+                <Box>
+                  <List>
+                    <Box display='flex' alignItems='center' marginBottom='16px'>
+                      <Avatar />
+                      <Box marginLeft='16px'>
+                        <Typography>takanori</Typography>
+                        <Typography>test.test@demo.com</Typography>
+                      </Box>
+                    </Box>
+                    <Divider />
+
+                    <Link href='#' underline='none' color='default'>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <ManageAccounts />
+                        </ListItemIcon>
+                        <ListItemText primary='プロフィール' />
+                      </ListItemButton>
+                    </Link>
+
+                    <Link href='#' underline='none' color='default'>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <Logout />
+                        </ListItemIcon>
+                        <ListItemText primary='ログアウト' />
+                      </ListItemButton>
+                    </Link>
+                  </List>
+                </Box>
+              </Box>
+            </Popper>
+
           </Toolbar>
         </AppBar>
+        
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
