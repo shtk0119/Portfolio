@@ -1,8 +1,5 @@
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { Link, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { AddHome, Dashboard, Newspaper, Search } from '@mui/icons-material';
-import { Link } from '@mui/material';
 
 export const ListItems = (
   <>
