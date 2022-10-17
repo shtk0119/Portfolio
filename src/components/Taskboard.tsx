@@ -108,9 +108,11 @@ const Taskboard = () => {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar color='default' open={open}>
+        <AppBar color='default' open={open} sx={{ boxShadow: 'none' }}>
           <Toolbar
             sx={{
+              borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+              backgroundColor: '#fff',
               pr: '24px', // keep right padding when drawer closed
             }}
           >
@@ -195,13 +197,13 @@ const Taskboard = () => {
               alignItems: 'center',
               justifyContent: 'flex-end',
               px: [1],
+              borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
             }}
           >
             <IconButton onClick={toggleDrawer}>
               <ChevronLeft />
             </IconButton>
           </Toolbar>
-          <Divider />
           <List component="nav">
             {ListItems}
           </List>
