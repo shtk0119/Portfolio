@@ -34,7 +34,7 @@ const Header = ({ title }: { title: string }) => {
 
   const toggleDrawer = () => {
     setOpen(!open);
-  };
+  }
 
   return (
     <>
