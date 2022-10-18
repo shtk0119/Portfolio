@@ -1,5 +1,5 @@
 import { Box, CssBaseline } from "@mui/material";
-import Header from "../components/Header";
+import { Header } from "../components/Header";
 import Taskboard from "../components/Taskboard";
 
 const Task = () => {

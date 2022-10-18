@@ -21,7 +21,7 @@ export const ListItems = (
       </ListItemButton>
     </Link>
 
-    <Link href='#' underline='none' color='default'>
+    <Link href='/search' underline='none' color='default'>
       <ListItemButton>
         <ListItemIcon>
           <Search />

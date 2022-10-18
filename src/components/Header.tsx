@@ -29,7 +29,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Header = ({ title }: { title: string }) => {
+export const Header = ({ title }: { title: string }) => {
   const [open, setOpen] = React.useState<boolean>(false);
 
   const toggleDrawer = () => {
@@ -62,5 +62,3 @@ const Header = ({ title }: { title: string }) => {
     </>
   )
 }
-
-export default Header;
