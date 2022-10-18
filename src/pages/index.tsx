@@ -1,18 +1,7 @@
 import Image from 'next/image';
 import type { NextPage } from 'next';
-import { 
-  AppBar,
-  Box, 
-  Button, 
-  Grid, 
-  List, 
-  ListItem, 
-  ListItemText, 
-  styled,
-  Typography,
-} from '@mui/material';
-import Link from 'next/link';
-import dynamic from 'next/dynamic'
+import { AppBar, Box, Button, Grid, Link, List, ListItem, ListItemText, styled, Typography } from '@mui/material';
+import dynamic from 'next/dynamic';
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -58,7 +47,9 @@ const Home: NextPage = () => {
             </Typography>
 
             <Box marginTop='32px'>
-              <Button variant='contained'>はじめる！</Button>
+              <Link href='/signup'>
+                <Button variant='contained'>はじめる！</Button>
+              </Link>
             </Box>
 
           </Box>
@@ -169,25 +160,25 @@ const Home: NextPage = () => {
 
         <Grid container justifyContent='center' marginTop='16px'>
           <Grid item xs={2}>
-            <Link href='/' passHref>
-              <a>ホーム</a>
+            <Link href='/' color='default' underline='none'>
+              ホーム
             </Link>
           </Grid>
           <Grid item xs={2}>
-            <Link href='#' passHref>
-              <a>ヘルプ・お問い合わせ</a>
+            <Link href='#' color='default' underline='none'>
+              ヘルプ・お問い合わせ
             </Link>
           </Grid>
           <Grid item xs={2}>
-            <Link href='#' passHref>
-              <a>開発者について</a>
+            <Link href='#' color='default' underline='none'>
+              開発者について
             </Link>
           </Grid>
         </Grid>
 
         <Box marginTop='16px'>
-          <Link href='https://github.com/shtk928' passHref>
-            <a><Image src='/GitHub_Mark_120px.png' alt='github_logo' height="20px" width='20px' /></a>
+          <Link href='https://github.com/shtk928'>
+            <Image src='/GitHub_Mark_120px.png' alt='github_logo' height="20px" width='20px' />
           </Link>
         </Box>
 

@@ -1,14 +1,4 @@
-import { 
-  Box, 
-  Button, 
-  FormControl, 
-  Input, 
-  InputLabel, 
-  Stack, 
-  styled, 
-  Typography
-} from '@mui/material';
-import Link from 'next/link';
+import { Box, Button, FormControl, Input, InputLabel, Link, Stack, styled, Typography } from '@mui/material';
 
 const CustomButton = styled(Button)({
   fontWeight: 'bold',
@@ -69,8 +59,8 @@ const Login = () => {
 
           <Box mt='32px' textAlign='center'>
             <Typography fontSize='14px' color='primary'>
-              <Link href='/signup' passHref>
-                <a>アカウントを作成</a>
+              <Link href='/signup' underline='none'>
+                アカウントを作成
               </Link>
             </Typography>
           </Box>
