@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Box, IconButton, List, styled, Toolbar, Typography } from '@mui/material';
+import { Box, IconButton, styled, Toolbar, Typography } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import MuiDrawer from '@mui/material/Drawer';
-import { ChevronLeft, Menu } from '@mui/icons-material';
-import { ListItems } from './ListItems';
+import { Menu } from '@mui/icons-material';
+import { Sidebar } from './Sidebar';
 import { MenuItems } from './MenuItems';
 
 const drawerWidth: number = 240;
@@ -29,32 +28,6 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
 }));
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    '& .MuiDrawer-paper': {
-      position: 'relative',
-      whiteSpace: 'nowrap',
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      boxSizing: 'border-box',
-      ...(!open && {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9),
-        },
-      }),
-    },
-  }),
-);
 
 const Header = ({ title }: { title: string }) => {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -82,30 +55,10 @@ const Header = ({ title }: { title: string }) => {
           <Typography variant="h6" fontWeight='bold' noWrap flexGrow={1}>
             {title}
           </Typography>
-
           <MenuItems />
         </Toolbar>
       </AppBar>
-      
-      <Drawer variant='permanent' open={open}>
-        <Toolbar
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            px: [1],
-            borderBottom: '1px solid #00000033',
-          }}
-        >
-          <IconButton onClick={toggleDrawer}>
-            <ChevronLeft />
-          </IconButton>
-        </Toolbar>
-        <List component='nav'>
-          {ListItems}
-        </List>
-      </Drawer>
-      
+      <Sidebar drawerWidth={drawerWidth} open={open} toggleDrawer={toggleDrawer} />
       <Box
         component="main"
         sx={{
