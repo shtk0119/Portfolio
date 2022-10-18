@@ -1,12 +1,9 @@
-import Header from "../components/Header";
-import { Box, CssBaseline } from "@mui/material";
+import * as React from 'react';
 
 const Test = () => {
   return (
-    <Box display='flex'>
-      <CssBaseline />
-      <Header title={'タスクボード'}/>
-    </Box>
+    <>
+    </>
   )
 }
 
