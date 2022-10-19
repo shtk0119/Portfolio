@@ -1,12 +1,27 @@
-import { Box, Button, FormControl, Input, InputLabel, Link, Stack, styled, Typography } from '@mui/material';
-
-const CustomButton = styled(Button)({
-  fontWeight: 'bold',
-  textTransform: 'none',
-  backgroundColor: '#4299e1'
-});
+import * as React from 'react';
+import { useRouter } from 'next/router';
+import { Box, Button, FormControl, Input, InputLabel, Link, Stack, Typography } from '@mui/material';
+import { auth } from '../firebase/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = () => {
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const router = useRouter();
+
+  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  }
+
+  const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await signInWithEmailAndPassword(auth, email, password);
+    router.push('/task');
+  }
 
   return (
     <Box minHeight='100vh'>
@@ -37,25 +52,21 @@ const Login = () => {
           borderRadius='10px'
         >
 
-          <Box mt='24px'>
-            <FormControl id='Email' required fullWidth>
-              <InputLabel>Email</InputLabel>
-              <Input type='email' />
+          <form onSubmit={handleSubmit}>
+            <FormControl fullWidth>
+              <InputLabel>メールアドレス</InputLabel>
+              <Input name='email' type='email' onChange={handleChangeEmail} />
             </FormControl>
-          </Box>
 
-          <Box mt='24px'>
-            <FormControl id='Password' required fullWidth>
-              <InputLabel>Password</InputLabel>
-              <Input type='password' />
+            <FormControl sx={{ mt: 3 }} fullWidth>
+              <InputLabel>パスワード</InputLabel>
+              <Input name='password' type='password' onChange={handleChangePassword} />
             </FormControl>
-          </Box>
-          
-          <Box mt='32px' textAlign='center'>
-            <CustomButton type='submit' variant='contained' fullWidth>
+
+            <Button sx={{ bgcolor: '#4299e1', fontWeight: 'bold', textTransform: 'none', mt: 6 }} type='submit' variant='contained' fullWidth>
               Login
-            </CustomButton>
-          </Box>
+            </Button>
+          </form>
 
           <Box mt='32px' textAlign='center'>
             <Typography fontSize='14px' color='primary'>
