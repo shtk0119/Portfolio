@@ -59,7 +59,7 @@ export const TaskList = () => {
             <List>
               <ListItem>
                 <Checkbox />
-                <ListItemText sx={{ ml: 1, maxWidth: '300px' }}>タイトル</ListItemText>
+                <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px' }}>タイトル</ListItemText>
                 <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>カテゴリー</ListItemText>
                 <ListItemText sx={{ maxWidth: '280px' }}>ステータス</ListItemText>
                 <ListItemText sx={{ maxWidth: '280px' }}>開始日</ListItemText>
@@ -72,7 +72,7 @@ export const TaskList = () => {
                   <Box key={task.id}>
                     <ListItem>
                       <Checkbox />
-                      <ListItemText sx={{ ml: 1, maxWidth: '300px' }}><Link href='#' underline='none'>{task.title}</Link></ListItemText>
+                      <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px' }}><Link href='#' underline='none'>{task.title}</Link></ListItemText>
                       <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>{task.category}</ListItemText>
                       <ListItemText sx={{ maxWidth: '280px' }}>{task.status}</ListItemText>
                       <ListItemText sx={{ maxWidth: '280px' }}>{task.start_date}</ListItemText>
