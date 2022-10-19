@@ -48,7 +48,8 @@ export const AddTaskModal = ({isAdd, setIsAdd}: Props) => {
 
             <FormControl sx={{ display: 'block', mt: 5, width: '50%' }}>
               <InputLabel>カテゴリー</InputLabel>
-              <Select label="カテゴリー" fullWidth defaultValue={undefined}> {/* defaultValueがundefinedだと警告がでる、 後で修正 */}
+              {/* defaultvalueがundefindだとコンソールに警告がでるため、一時的に書類関係をdefaultvalueにする */}
+              <Select label='category' fullWidth defaultValue={'書類関係'}> 
                 <MenuItem value={'書類関係'}>書類関係</MenuItem>
                 <MenuItem value={'荷物'}>荷物</MenuItem>
               </Select>
@@ -56,15 +57,11 @@ export const AddTaskModal = ({isAdd, setIsAdd}: Props) => {
 
             <FormControl sx={{ display: 'block', mt: 5, width: '50%' }}>
               <InputLabel>ステータス</InputLabel>
-              <Select label="ステータス" fullWidth defaultValue={'開始前'}>
+              <Select label='status' fullWidth defaultValue={'開始前'}>
                 <MenuItem value={'開始前'}>開始前</MenuItem>
                 <MenuItem value={'作業中'}>作業中</MenuItem>
                 <MenuItem value={'終了'}>終了</MenuItem>
               </Select>
-            </FormControl>
-
-            <FormControl sx={{ display: 'block', mt: 5 }}>
-              
             </FormControl>
           </Box>
         </Box>
