@@ -14,10 +14,7 @@ type Task = {
 
 export const TaskList = () => {
   const [isAdd, setIsAdd] = React.useState<boolean>(false);
-  const [tasks, setTasks] = React.useState<Task[]>([
-    {id: 1, title: 'Demo1', category: 'Demo1 Category', status: '開始前', start_date: '2022-10-1', end_date: '2022-11-1'},
-    {id: 2,title: 'Demo2', category: 'Demo2 Category', status: '作業中', start_date: '2022-11-1', end_date: '2022-12-1'},
-  ]);
+  const [tasks, setTasks] = React.useState<Task[] | null>(null);
 
   const onClickAddTask = () => {
     setIsAdd(!isAdd);
