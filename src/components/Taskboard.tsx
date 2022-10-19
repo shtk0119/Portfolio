@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Send } from '@mui/icons-material';
 import { Avatar,Box, Card, CardHeader, Divider, IconButton, Input, Modal, Typography } from '@mui/material';
 
-const Taskboard = () => {
+export const Taskboard = () => {
   const [todos, setTodos] = React.useState(['test1', 'test2', 'test3', 'test4', 'test5', 'test6']);
   
   const [cardOpen, setCardOpen] = React.useState<boolean>(false);
@@ -155,5 +155,3 @@ const Taskboard = () => {
     </Box>
   );
 }
-
-export default Taskboard;
