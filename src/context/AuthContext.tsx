@@ -22,7 +22,7 @@ export const useAuthContext = () => {
 export const AuthProvider = ({ children }: AuthProps) => {
   const [user, setUser] = React.useState<UserType>(null);
   const router = useRouter();
-  const isAvailableForViewing = router.pathname === '/' || router.pathname === '/login' || router.pathname === '/signup';
+  const isAvailableForViewing = router.pathname === '/' || router.pathname === '/login' || router.pathname === '/signup' || router.pathname === '/404';
   const value = { user }
 
   React.useEffect(() => {
