@@ -1,13 +1,22 @@
 import * as React from 'react';
+import { useRouter } from 'next/router';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase/firebase';
 import { AccountCircle, Logout, Person, Settings } from '@mui/icons-material';
 import { Avatar, Box, Divider, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Popper, Typography } from '@mui/material';
 
 export const MenuItems = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const popOpen = Boolean(anchorEl);
+  const router = useRouter();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
+  }
+
+  const onClickLogout = async () => {
+    await signOut(auth);
+    await router.push('/login');
   }
 
   return (
@@ -52,7 +61,7 @@ export const MenuItems = () => {
               <Divider />
               <ListItem disablePadding>
                 <Link href='#' underline='none' color='default' width='100%'>
-                  <ListItemButton>
+                  <ListItemButton onClick={onClickLogout}>
                     <ListItemIcon>
                       <Logout />
                     </ListItemIcon>
