@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Box, FormControl, FormLabel, IconButton, Input, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import { Box, Button, FormControl, FormLabel, IconButton, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
+import { ArrowRightAlt, Close } from '@mui/icons-material';
 
 type Props = {
   isAdd: boolean;
@@ -49,7 +49,7 @@ export const AddTaskModal = ({isAdd, setIsAdd}: Props) => {
             <FormControl sx={{ display: 'block', mt: 5, width: '50%' }}>
               <InputLabel>カテゴリー</InputLabel>
               {/* defaultvalueがundefindだとコンソールに警告がでるため、一時的に書類関係をdefaultvalueにする */}
-              <Select label='category' fullWidth defaultValue={'書類関係'}> 
+              <Select label='カテゴリー' fullWidth defaultValue={'書類関係'}> 
                 <MenuItem value={'書類関係'}>書類関係</MenuItem>
                 <MenuItem value={'荷物'}>荷物</MenuItem>
               </Select>
@@ -57,12 +57,32 @@ export const AddTaskModal = ({isAdd, setIsAdd}: Props) => {
 
             <FormControl sx={{ display: 'block', mt: 5, width: '50%' }}>
               <InputLabel>ステータス</InputLabel>
-              <Select label='status' fullWidth defaultValue={'開始前'}>
+              <Select label='ステータス' fullWidth defaultValue={'開始前'}>
                 <MenuItem value={'開始前'}>開始前</MenuItem>
                 <MenuItem value={'作業中'}>作業中</MenuItem>
                 <MenuItem value={'終了'}>終了</MenuItem>
               </Select>
             </FormControl>
+
+            <Box display='flex' justifyContent='space-around' alignItems='flex-end'>
+              <FormControl sx={{ mt: 5, width: '30%' }}>
+                <InputLabel shrink>開始日</InputLabel>
+                <Input type='date' />
+              </FormControl>
+
+              <ArrowRightAlt />
+
+              <FormControl sx={{ mt: 5, width: '30%' }}>
+                <InputLabel shrink>終了日</InputLabel>
+                <Input type='date' />
+              </FormControl>
+            </Box>
+
+            <FormControl sx={{ display: 'block', mt: 5 }} fullWidth>
+              <TextField label='詳細' variant='standard' fullWidth />
+            </FormControl>
+          
+            <Button sx={{ display: 'block', mt: 5, ml: 'auto' }} variant='contained'>保存</Button>
           </Box>
         </Box>
       </Modal>

@@ -62,8 +62,8 @@ export const TaskList = () => {
                 <ListItemText sx={{ ml: 1, maxWidth: '300px' }}>タイトル</ListItemText>
                 <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>カテゴリー</ListItemText>
                 <ListItemText sx={{ maxWidth: '280px' }}>ステータス</ListItemText>
-                <ListItemText sx={{ maxWidth: '280px' }}>開始予定</ListItemText>
-                <ListItemText sx={{ maxWidth: '280px' }}>終了予定</ListItemText>
+                <ListItemText sx={{ maxWidth: '280px' }}>開始日</ListItemText>
+                <ListItemText sx={{ maxWidth: '280px' }}>終了日</ListItemText>
               </ListItem>
               <Divider />
 
