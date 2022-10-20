@@ -3,7 +3,7 @@ name: 'Task : '
 about: Task の内容を記述
 title: ''
 labels: enhancement
-assignees: ''
+assignees: shtk928
 
 ---
 

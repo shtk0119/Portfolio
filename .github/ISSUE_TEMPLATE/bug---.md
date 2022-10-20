@@ -3,7 +3,7 @@ name: 'Bug : '
 about: Bug を報告する
 title: ''
 labels: bug
-assignees: ''
+assignees: shtk928
 
 ---
 
