@@ -10,23 +10,23 @@ type Props = {
 }
 
 type Task = {
-  title: string | undefined;
-  category: string | undefined;
+  title: string;
+  category: string;
   status: string;
   start_date: string;
   end_date: string;
-  text?: string;
+  text: string | null;
 }
 
 const Today = new Date();
 
 const defaultTask: Task = {
-  title: undefined,
+  title: '',
   category: 'なし',
   status: '開始前',
   start_date: `${Today.getFullYear()}-${Today.getMonth() + 1}-${Today.getDate()}`,
   end_date: `${Today.getFullYear()}-${Today.getMonth() + 1}-${Today.getDate()}`,
-  text: undefined,
+  text: null,
 }
 
 const style = {
