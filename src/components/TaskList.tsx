@@ -2,9 +2,11 @@ import * as React from 'react';
 import { Box, Checkbox, Divider, IconButton, Link, List, ListItem, ListItemText } from '@mui/material';
 import { Add, Delete, FilterList } from '@mui/icons-material';
 import { AddTaskModal } from './AddTaskModal';
+import { db } from '../firebase/firebase';
+import { collection, getDocs, query } from 'firebase/firestore';
+import { getFirestoreData } from '../firebase/getFirestoreData';
 
 type Task = {
-  id: number;
   title: string;
   category: string;
   status: '開始前' | '作業中' | '終了';
@@ -14,11 +16,29 @@ type Task = {
 
 export const TaskList = () => {
   const [isAdd, setIsAdd] = React.useState<boolean>(false);
+  // const [tasks, setTasks] = React.useState<Task[] | undefined>(getFirestoreData);
   const [tasks, setTasks] = React.useState<Task[] | null>(null);
 
   const onClickAddTask = () => {
     setIsAdd(!isAdd);
-  }
+  } 
+
+  // React.useEffect(() => {
+  //   const q = query(collection(db, 'tasks'));
+  //   const querySnapshot = getDocs(q);
+  //   console.log(querySnapshot);
+  // }, [])
+
+  React.useEffect(() => {
+    const q = query(collection(db, 'tasks'));
+    getDocs(q).then((snapShot) => {
+      setTasks(snapShot.docs);
+    })
+  }, [])
+
+  React.useEffect(() => {
+    console.log(tasks)
+  }, [])
 
   return (
     <Box
@@ -64,7 +84,7 @@ export const TaskList = () => {
               </ListItem>
               <Divider />
 
-              {tasks?.map((task) => {
+              {/* {tasks?.map((task) => {
                 return (
                   <Box key={task.id}>
                     <ListItem>
@@ -78,7 +98,7 @@ export const TaskList = () => {
                     <Divider /> 
                   </Box>
                 )
-              })}
+              })} */}
             </List>
           </Box>
         </Box>

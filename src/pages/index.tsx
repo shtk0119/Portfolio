@@ -54,7 +54,7 @@ const Home: NextPage = () => {
 
           </Box>
           <Box position='relative' height='480px' width='330px' >
-            <Image src='/img_e74785077b13e19cc4b3c0c6ca10e13474357.png' layout='fill' alt='logo' />
+            <Image src='/FO5SYypbtlbKUWd1666259670_1666260151.png' layout='fill' alt='logo' />
           </Box>
         </Box>
 
