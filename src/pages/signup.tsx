@@ -20,6 +20,7 @@ const Signup = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await createUserWithEmailAndPassword(auth, email, password);
+    router.push('/task');
   }
 
   return (
