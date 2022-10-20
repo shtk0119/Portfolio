@@ -2,14 +2,15 @@ import * as React from 'react';
 import { Box, Checkbox, Divider, IconButton, Link, List, ListItem, ListItemText } from '@mui/material';
 import { Add, Delete, FilterList } from '@mui/icons-material';
 import { AddTaskModal } from './AddTaskModal';
+import { db } from '../firebase/firebase';
+import { collection, getDocs, query } from 'firebase/firestore';
 
 type Task = {
-  id: number;
   title: string;
   category: string;
   status: '開始前' | '作業中' | '終了';
-  start_date: string; // 型は変更予定
-  end_date: string; // 型は変更予定
+  start_date: string; 
+  end_date: string;
 }
 
 export const TaskList = () => {
@@ -18,7 +19,19 @@ export const TaskList = () => {
 
   const onClickAddTask = () => {
     setIsAdd(!isAdd);
-  }
+  } 
+
+  React.useEffect(() => {
+    const q = query(collection(db, 'tasks'));
+    getDocs(q).then((snapShot) => {
+      // QueryDocumentSnapshot<DocumentData>[] 型の修正
+      setTasks(snapShot.docs);
+    })
+  }, [])
+
+  React.useEffect(() => {
+    console.log(tasks?.map(doc => doc.id))
+  }, [tasks])
 
   return (
     <Box
@@ -66,14 +79,15 @@ export const TaskList = () => {
 
               {tasks?.map((task) => {
                 return (
+                  // 以下コード型修正
                   <Box key={task.id}>
                     <ListItem>
                       <Checkbox />
-                      <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px' }}><Link href='#' underline='none'>{task.title}</Link></ListItemText>
-                      <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>{task.category}</ListItemText>
-                      <ListItemText sx={{ maxWidth: '280px' }}>{task.status}</ListItemText>
-                      <ListItemText sx={{ maxWidth: '280px' }}>{task.start_date}</ListItemText>
-                      <ListItemText sx={{ maxWidth: '280px' }}>{task.end_date}</ListItemText>
+                      <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px' }}><Link href='#' underline='none'>{task.data().title}</Link></ListItemText>
+                      <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>{task.data().category}</ListItemText>
+                      <ListItemText sx={{ maxWidth: '280px' }}>{task.data().status}</ListItemText>
+                      <ListItemText sx={{ maxWidth: '280px' }}>{task.data().start_date}</ListItemText>
+                      <ListItemText sx={{ maxWidth: '280px' }}>{task.data().end_date}</ListItemText>
                     </ListItem>
                     <Divider /> 
                   </Box>
