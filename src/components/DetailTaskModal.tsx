@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Button, FormControl, FormLabel, IconButton, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
-import { ArrowRightAlt, Close, Task } from '@mui/icons-material';
+import { ArrowRightAlt, Close } from '@mui/icons-material';
 import { doc, DocumentData, QueryDocumentSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
@@ -8,26 +8,6 @@ type Props = {
   isDetail: boolean;
   setIsDetail: React.Dispatch<React.SetStateAction<string | null>>;
   task: QueryDocumentSnapshot;
-}
-
-type Task = {
-  title: string;
-  category: string;
-  status: string;
-  start_date: string;
-  end_date: string;
-  text: string | null;
-}
-
-const Today = new Date();
-
-const defaultTask: Task = {
-  title: '',
-  category: 'なし',
-  status: '開始前',
-  start_date: `${Today.getFullYear()}-${Today.getMonth() + 1}-${Today.getDate()}`,
-  end_date: `${Today.getFullYear()}-${Today.getMonth() + 1}-${Today.getDate()}`,
-  text: null,
 }
 
 const style = {
@@ -43,7 +23,6 @@ const style = {
 }
 
 export const DetailTaskModal = ({isDetail, setIsDetail, task}: Props) => {
-  const [editTaskId, setEditTaskId] = React.useState<string>(task.id);
   const [editTask, setEditTask] = React.useState<DocumentData>(task.data());
 
   const handleClose = () => {
@@ -51,7 +30,7 @@ export const DetailTaskModal = ({isDetail, setIsDetail, task}: Props) => {
   }
 
   const onClickTaskSave = async () => {
-    const ref = doc(db, 'tasks', editTaskId);
+    const ref = doc(db, 'tasks', task.id);
     await updateDoc(ref, {
       title: editTask.title,
       category: editTask.category,
