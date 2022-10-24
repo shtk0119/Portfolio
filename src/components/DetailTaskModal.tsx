@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, FormControl, FormLabel, IconButton, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, IconButton, Input, InputLabel, MenuItem, Modal, Select, TextField } from '@mui/material';
 import { ArrowRightAlt, Close } from '@mui/icons-material';
 import { doc, DocumentData, QueryDocumentSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
@@ -8,18 +8,6 @@ type Props = {
   isDetail: boolean;
   setIsDetail: React.Dispatch<React.SetStateAction<string | null>>;
   task: QueryDocumentSnapshot;
-}
-
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 600,
-  bgcolor: '#fff',
-  borderRadius: 1,
-  boxShadow: 24,
-  p: 4,
 }
 
 export const DetailTaskModal = ({isDetail, setIsDetail, task}: Props) => {
@@ -50,14 +38,9 @@ export const DetailTaskModal = ({isDetail, setIsDetail, task}: Props) => {
       >
         <Box sx={style}>
           <Box display='flex' justifyContent='space-between'>
-            <Typography variant="h5" fontWeight='bold'>
-              {editTask.title}
-            </Typography>
-
-            {/* <FormControl sx={{ mt: 5, width: '75%' }}>
-              <FormLabel sx={{ fontSize: '12px' }}>タイトル</FormLabel>
-              <Input value={editTask.title} onChange={(e) => setEditTask({ ...editTask, title: e.target.value })} />
-            </FormControl> */}
+            <FormControl sx={{ width: '75%' }}>
+              <Input sx={{ p: 1, fontWeight: 'bold', fontSize: '24px', ':focus-within': { border: '1px solid #00000033', borderRadius: 2, } }} disableUnderline fullWidth value={editTask.title} onChange={(e) => setEditTask({ ...editTask, title: e.target.value })} />
+            </FormControl>
 
             <IconButton onClick={handleClose}>
               <Close />
@@ -98,7 +81,7 @@ export const DetailTaskModal = ({isDetail, setIsDetail, task}: Props) => {
             </Box>
 
             <FormControl sx={{ display: 'block', mt: 5 }} fullWidth>
-              <TextField label='詳細' variant='standard' fullWidth value={editTask.text} onChange={(e) => setEditTask({ ...editTask, text: e.target.value })}/>
+              <TextField label='詳細' variant='outlined' multiline rows={5} fullWidth value={editTask.text} onChange={(e) => setEditTask({ ...editTask, text: e.target.value })}/>
             </FormControl>
           
             <Button sx={{ display: 'block', mt: 5, ml: 'auto' }} variant='contained' onClick={onClickTaskSave}>保存</Button>
@@ -107,4 +90,16 @@ export const DetailTaskModal = ({isDetail, setIsDetail, task}: Props) => {
       </Modal>
     </Box>
   )
+}
+
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: '#fff',
+  borderRadius: 1,
+  boxShadow: 24,
+  p: 4,
 }
