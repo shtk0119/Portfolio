@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Box, Checkbox, Divider, IconButton, Link, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Checkbox, Divider, IconButton, List, ListItem, ListItemText, Modal, Typography } from '@mui/material';
 import { Add, Delete, FilterList } from '@mui/icons-material';
 import { AddTaskModal } from './AddTaskModal';
+import { DetailTaskModal } from './DetailTaskModal';
 import { db } from '../firebase/firebase';
-import { collection, deleteDoc, doc, getDocs, onSnapshot, query } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, onSnapshot, query, QueryDocumentSnapshot } from 'firebase/firestore';
 
 type Task = {
   id: string;
@@ -16,12 +17,17 @@ type Task = {
 
 export const TaskList = () => {
   const [isAdd, setIsAdd] = React.useState<boolean>(false);
-  const [tasks, setTasks] = React.useState<Task[] | null>(null);
+  const [isDetail, setIsDetail] = React.useState<string | null>(null);
+  const [tasks, setTasks] = React.useState<QueryDocumentSnapshot[] | null>(null);
   const [deleteTaskIds, setDeleteTaskIds] = React.useState<string[]>([]);
 
   const onClickAddTask = () => {
     setIsAdd(!isAdd);
   } 
+
+  const onClickDetailTask = (id: string) => {
+    setIsDetail(id);
+  }
 
   const isCheckedTasks = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
     // if を２回に分けている為、コードが冗長になっている修正
@@ -44,19 +50,14 @@ export const TaskList = () => {
   React.useEffect(() => {
     const q = query(collection(db, 'tasks'));
     getDocs(q).then((snapShot) => {
-      // QueryDocumentSnapshot<DocumentData>[] 型の修正
       setTasks(snapShot.docs);
     });
 
     onSnapshot(q, (snapShot) => {
-      // QueryDocumentSnapshot<DocumentData>[] 型の修正
-      setTasks(snapShot.docs)
+      setTasks(snapShot.docs);
     });
   }, [])
 
-  React.useEffect(() => {
-    console.log(deleteTaskIds)
-  }, [deleteTaskIds])
 
   return (
     <Box
@@ -102,19 +103,21 @@ export const TaskList = () => {
               </ListItem>
               <Divider />
 
-              {tasks?.map((task: Task) => {
+              {tasks?.map((task: QueryDocumentSnapshot) => {
                 return (
-                  // 以下コード型修正
                   <Box key={task.id}>
                     <ListItem>
                       <Checkbox onChange={(e) => isCheckedTasks(e, task.id)} />
-                      <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px' }}><Link href='#' underline='none'>{task.data().title}</Link></ListItemText>
+                      <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px', '& .MuiTypography-body1': { display: 'inline', '&:hover': { cursor: 'pointer', opacity: '0.6' } } }} onClick={() => onClickDetailTask(task.id)}>{task.data().title}</ListItemText>
                       <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>{task.data().category}</ListItemText>
                       <ListItemText sx={{ maxWidth: '280px' }}>{task.data().status}</ListItemText>
                       <ListItemText sx={{ maxWidth: '280px' }}>{task.data().start_date}</ListItemText>
                       <ListItemText sx={{ maxWidth: '280px' }}>{task.data().end_date}</ListItemText>
                     </ListItem>
-                    <Divider /> 
+                    <Divider />
+
+                    <DetailTaskModal isDetail={isDetail === task.id} setIsDetail={setIsDetail} task={task}/>
+
                   </Box>
                 )
               })}
