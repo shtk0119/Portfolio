@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Box, Button, FormControl, FormLabel, IconButton, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
-import { ArrowRightAlt, Close } from '@mui/icons-material';
-import { collection, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { ArrowRightAlt, Close, Task } from '@mui/icons-material';
+import { doc, DocumentData, QueryDocumentSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
 type Props = {
   isDetail: boolean;
-  setIsDetail: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsDetail: React.Dispatch<React.SetStateAction<string | null>>;
+  task: QueryDocumentSnapshot;
 }
 
 type Task = {
@@ -41,24 +42,24 @@ const style = {
   p: 4,
 }
 
-export const DetailTaskModal = ({isDetail, setIsDetail}: Props) => {
-  const [task, setTask] = React.useState<Task>(defaultTask);
+export const DetailTaskModal = ({isDetail, setIsDetail, task}: Props) => {
+  const [editTaskId, setEditTaskId] = React.useState<string>(task.id);
+  const [editTask, setEditTask] = React.useState<DocumentData>(task.data());
 
   const handleClose = () => {
-    setIsDetail(!isDetail);
+    setIsDetail(null);
   }
 
   const onClickTaskSave = async () => {
-    await updateDoc(collection(db, 'tasks'), {
-      title: task.title,
-      category: task.category,
-      status: task.status,
-      start_date: task.start_date,
-      end_date: task.end_date,
-      text: task.text,
-      timestamp: serverTimestamp(),
-    })
-    setTask(defaultTask);
+    const ref = doc(db, 'tasks', editTaskId);
+    await updateDoc(ref, {
+      title: editTask.title,
+      category: editTask.category,
+      status: editTask.status,
+      start_date: editTask.start_date,
+      end_date: editTask.end_date,
+      text: editTask.text,
+    });
     handleClose();
   }
 
@@ -71,22 +72,23 @@ export const DetailTaskModal = ({isDetail, setIsDetail}: Props) => {
         <Box sx={style}>
           <Box display='flex' justifyContent='space-between'>
             <Typography variant="h5" fontWeight='bold'>
-              タスク作成
+              {editTask.title}
             </Typography>
+
+            {/* <FormControl sx={{ mt: 5, width: '75%' }}>
+              <FormLabel sx={{ fontSize: '12px' }}>タイトル</FormLabel>
+              <Input value={editTask.title} onChange={(e) => setEditTask({ ...editTask, title: e.target.value })} />
+            </FormControl> */}
+
             <IconButton onClick={handleClose}>
               <Close />
             </IconButton>
           </Box>
 
           <Box>
-            <FormControl sx={{ mt: 5, width: '75%' }}>
-              <FormLabel sx={{ fontSize: '12px' }}>タイトル</FormLabel>
-              <Input onChange={(e) => setTask({ ...task, title: e.target.value })} />
-            </FormControl>
-
             <FormControl sx={{ display: 'block', mt: 5, width: '50%' }}>
               <InputLabel>カテゴリー</InputLabel>
-              <Select label='カテゴリー' fullWidth defaultValue={'なし'} onChange={(e) => setTask({ ...task, category: e.target.value })}> 
+              <Select label='カテゴリー' fullWidth value={editTask.category} onChange={(e) => setEditTask({ ...editTask, category: e.target.value })}> 
                 <MenuItem value={'なし'}>なし</MenuItem>
                 <MenuItem value={'書類関係'}>書類関係</MenuItem>
                 <MenuItem value={'荷物'}>荷物</MenuItem>
@@ -95,7 +97,7 @@ export const DetailTaskModal = ({isDetail, setIsDetail}: Props) => {
 
             <FormControl sx={{ display: 'block', mt: 5, width: '50%' }}>
               <InputLabel>ステータス</InputLabel>
-              <Select label='ステータス' fullWidth defaultValue={'開始前'} onChange={(e) => setTask({ ...task, status: e.target.value })}>
+              <Select label='ステータス' fullWidth value={editTask.status} onChange={(e) => setEditTask({ ...editTask, status: e.target.value })}>
                 <MenuItem value={'開始前'}>開始前</MenuItem>
                 <MenuItem value={'作業中'}>作業中</MenuItem>
                 <MenuItem value={'終了'}>終了</MenuItem>
@@ -105,19 +107,19 @@ export const DetailTaskModal = ({isDetail, setIsDetail}: Props) => {
             <Box display='flex' justifyContent='space-around' alignItems='flex-end'>
               <FormControl sx={{ mt: 5, width: '30%' }}>
                 <InputLabel shrink>開始日</InputLabel>
-                <Input type='date' onChange={(e) => setTask({ ...task, start_date: e.target.value })} />
+                <Input type='date' value={editTask.start_date} onChange={(e) => setEditTask({ ...editTask, start_date: e.target.value })} />
               </FormControl>
 
               <ArrowRightAlt />
 
               <FormControl sx={{ mt: 5, width: '30%' }}>
                 <InputLabel shrink>終了日</InputLabel>
-                <Input type='date' onChange={(e) => setTask({ ...task, end_date: e.target.value })} />
+                <Input type='date' value={editTask.end_date} onChange={(e) => setEditTask({ ...editTask, end_date: e.target.value })} />
               </FormControl>
             </Box>
 
             <FormControl sx={{ display: 'block', mt: 5 }} fullWidth>
-              <TextField label='詳細' variant='standard' fullWidth onChange={(e) => setTask({ ...task, text: e.target.value })} />
+              <TextField label='詳細' variant='standard' fullWidth value={editTask.text} onChange={(e) => setEditTask({ ...editTask, text: e.target.value })}/>
             </FormControl>
           
             <Button sx={{ display: 'block', mt: 5, ml: 'auto' }} variant='contained' onClick={onClickTaskSave}>保存</Button>

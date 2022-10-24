@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Checkbox, Divider, IconButton, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Checkbox, Divider, IconButton, List, ListItem, ListItemText, Modal, Typography } from '@mui/material';
 import { Add, Delete, FilterList } from '@mui/icons-material';
 import { AddTaskModal } from './AddTaskModal';
 import { DetailTaskModal } from './DetailTaskModal';
@@ -17,13 +17,17 @@ type Task = {
 
 export const TaskList = () => {
   const [isAdd, setIsAdd] = React.useState<boolean>(false);
-  const [isDetail, setIsDetail] = React.useState<boolean>(false);
+  const [isDetail, setIsDetail] = React.useState<string | null>(null);
   const [tasks, setTasks] = React.useState<QueryDocumentSnapshot[] | null>(null);
   const [deleteTaskIds, setDeleteTaskIds] = React.useState<string[]>([]);
 
   const onClickAddTask = () => {
     setIsAdd(!isAdd);
   } 
+
+  const onClickDetailTask = (id: string) => {
+    setIsDetail(id);
+  }
 
   const isCheckedTasks = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
     // if を２回に分けている為、コードが冗長になっている修正
@@ -50,17 +54,10 @@ export const TaskList = () => {
     });
 
     onSnapshot(q, (snapShot) => {
-      setTasks(snapShot.docs)
+      setTasks(snapShot.docs);
     });
   }, [])
 
-  const onClickDetailTask = () => {
-    console.log('test')
-  }
-
-  React.useEffect(() => {
-    console.log(deleteTaskIds)
-  }, [deleteTaskIds])
 
   return (
     <Box
@@ -111,13 +108,16 @@ export const TaskList = () => {
                   <Box key={task.id}>
                     <ListItem>
                       <Checkbox onChange={(e) => isCheckedTasks(e, task.id)} />
-                      <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px', '& .MuiTypography-body1': { display: 'inline', '&:hover': { cursor: 'pointer', opacity: '0.6' } } }} onClick={() => onClickDetailTask()}>{task.data().title}</ListItemText>
+                      <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px', '& .MuiTypography-body1': { display: 'inline', '&:hover': { cursor: 'pointer', opacity: '0.6' } } }} onClick={() => onClickDetailTask(task.id)}>{task.data().title}</ListItemText>
                       <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>{task.data().category}</ListItemText>
                       <ListItemText sx={{ maxWidth: '280px' }}>{task.data().status}</ListItemText>
                       <ListItemText sx={{ maxWidth: '280px' }}>{task.data().start_date}</ListItemText>
                       <ListItemText sx={{ maxWidth: '280px' }}>{task.data().end_date}</ListItemText>
                     </ListItem>
-                    <Divider /> 
+                    <Divider />
+
+                    <DetailTaskModal isDetail={isDetail === task.id} setIsDetail={setIsDetail} task={task}/>
+
                   </Box>
                 )
               })}
@@ -127,8 +127,6 @@ export const TaskList = () => {
       </Box>
 
       <AddTaskModal isAdd={isAdd} setIsAdd={setIsAdd} />
-
-      <DetailTaskModal isDetail={isDetail} setIsDetail={setIsDetail} />
 
     </Box>
   )
