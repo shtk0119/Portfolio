@@ -6,20 +6,16 @@ import { DetailTaskModal } from './DetailTaskModal';
 import { db } from '../firebase/firebase';
 import { collection, deleteDoc, doc, getDocs, onSnapshot, query, QueryDocumentSnapshot } from 'firebase/firestore';
 
-type Task = {
+type DeleteTask = {
   id: string;
-  title: string;
-  category: string;
-  status: '開始前' | '作業中' | '終了';
-  start_date: string; 
-  end_date: string;
+  isCheck: boolean;
 }
 
 export const TaskList = () => {
   const [isAdd, setIsAdd] = React.useState<boolean>(false);
   const [isDetail, setIsDetail] = React.useState<string | null>(null);
   const [tasks, setTasks] = React.useState<QueryDocumentSnapshot[] | null>(null);
-  const [deleteTaskIds, setDeleteTaskIds] = React.useState<string[]>([]);
+  const [deleteTaskIds, setDeleteTaskIds] = React.useState<DeleteTask[]>([]);
 
   const onClickAddTask = () => {
     setIsAdd(!isAdd);
@@ -31,18 +27,34 @@ export const TaskList = () => {
 
   const isCheckedTasks = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
     // if を２回に分けている為、コードが冗長になっている修正
-    if (e.target.checked) {
-      setDeleteTaskIds([ ...deleteTaskIds, id ]);
+    // if (e.target.checked) {
+    //   setDeleteTaskIds([ ...deleteTaskIds, id ]);
+    // }
+
+    // if (!e.target.checked) {
+    //   setDeleteTaskIds(deleteTaskIds.filter((deleteTaskId) => deleteTaskId !== id));
+    // }
+    
+
+  }
+
+  const isCheckedAllTasks = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (tasks && e.target.checked) {
+      setDeleteTaskIds(deleteTaskIds.map((deleteTaskId) => {
+        return {id: deleteTaskId.id, isCheck: true}
+      }));
     }
 
-    if (!e.target.checked) {
-      setDeleteTaskIds(deleteTaskIds.filter((deleteTaskId) => deleteTaskId !== id));
+    if (tasks && !e.target.checked) {
+      setDeleteTaskIds(deleteTaskIds.map((deleteTaskId) => {
+        return {id: deleteTaskId.id, isCheck: false}
+      }));
     }
   }
 
   const onClickDeleteTask = () => {
     deleteTaskIds.map((deleteTaskId) => {
-      deleteDoc(doc(db, 'tasks', deleteTaskId));
+      deleteDoc(doc(db, 'tasks', deleteTaskId.id));
     });
     setDeleteTaskIds([]);
   }
@@ -51,6 +63,9 @@ export const TaskList = () => {
     const q = query(collection(db, 'tasks'));
     getDocs(q).then((snapShot) => {
       setTasks(snapShot.docs);
+      setDeleteTaskIds(snapShot.docs.map((doc) => {
+        return {id: doc.id, isCheck: false}
+      }));
     });
 
     onSnapshot(q, (snapShot) => {
@@ -58,6 +73,9 @@ export const TaskList = () => {
     });
   }, [])
 
+  React.useEffect(() => {
+    console.log(deleteTaskIds);
+  }, [deleteTaskIds]);
 
   return (
     <Box
@@ -94,7 +112,7 @@ export const TaskList = () => {
           <Box>
             <List>
               <ListItem>
-                <Checkbox />
+                <Checkbox onChange={(e) => isCheckedAllTasks(e)} />
                 <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px' }}>タイトル</ListItemText>
                 <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>カテゴリー</ListItemText>
                 <ListItemText sx={{ maxWidth: '280px' }}>ステータス</ListItemText>
