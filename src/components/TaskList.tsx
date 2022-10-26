@@ -73,9 +73,9 @@ export const TaskList = () => {
     });
   }, [])
 
-  React.useEffect(() => {
-    console.log(deleteTaskIds);
-  }, [deleteTaskIds]);
+  // React.useEffect(() => {
+  //   console.log(deleteTaskIds);
+  // }, [deleteTaskIds]);
 
   return (
     <Box
