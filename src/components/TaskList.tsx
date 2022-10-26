@@ -1,19 +1,10 @@
 import * as React from 'react';
-import { Box, Checkbox, Divider, IconButton, List, ListItem, ListItemText, Modal, Typography } from '@mui/material';
+import { Box, Checkbox, Divider, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import { Add, Delete, FilterList } from '@mui/icons-material';
 import { AddTaskModal } from './AddTaskModal';
 import { DetailTaskModal } from './DetailTaskModal';
 import { db } from '../firebase/firebase';
 import { collection, deleteDoc, doc, getDocs, onSnapshot, query, QueryDocumentSnapshot } from 'firebase/firestore';
-
-type Task = {
-  id: string;
-  title: string;
-  category: string;
-  status: '開始前' | '作業中' | '終了';
-  start_date: string; 
-  end_date: string;
-}
 
 export const TaskList = () => {
   const [isAdd, setIsAdd] = React.useState<boolean>(false);
@@ -30,13 +21,22 @@ export const TaskList = () => {
   }
 
   const isCheckedTasks = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
-    // if を２回に分けている為、コードが冗長になっている修正
-    if (e.target.checked) {
+    if (e.target.checked && !deleteTaskIds.includes(id)) {
       setDeleteTaskIds([ ...deleteTaskIds, id ]);
     }
 
     if (!e.target.checked) {
-      setDeleteTaskIds(deleteTaskIds.filter((deleteTaskId) => deleteTaskId !== id));
+      setDeleteTaskIds(deleteTaskIds.filter((deleteTaskId) => deleteTaskId !== id))
+    }
+  }
+
+  const isCheckedAllTasks = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (tasks && e.target.checked) {
+      setDeleteTaskIds(tasks?.map((task) => task.id));
+    }
+
+    if (!e.target.checked) {
+      setDeleteTaskIds([]);
     }
   }
 
@@ -58,6 +58,9 @@ export const TaskList = () => {
     });
   }, [])
 
+  React.useEffect(() => {
+    console.log(deleteTaskIds);
+  }, [deleteTaskIds]);
 
   return (
     <Box
@@ -94,7 +97,7 @@ export const TaskList = () => {
           <Box>
             <List>
               <ListItem>
-                <Checkbox />
+                <Checkbox checked={tasks?.length === deleteTaskIds.length} onChange={(e) => isCheckedAllTasks(e)} />
                 <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px' }}>タイトル</ListItemText>
                 <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>カテゴリー</ListItemText>
                 <ListItemText sx={{ maxWidth: '280px' }}>ステータス</ListItemText>
@@ -107,7 +110,7 @@ export const TaskList = () => {
                 return (
                   <Box key={task.id}>
                     <ListItem>
-                      <Checkbox onChange={(e) => isCheckedTasks(e, task.id)} />
+                      <Checkbox checked={deleteTaskIds.includes(task.id)} onChange={(e) => isCheckedTasks(e, task.id)} />
                       <ListItemText sx={{ ml: 1, minWidth: '250px', maxWidth: '300px', '& .MuiTypography-body1': { display: 'inline', '&:hover': { cursor: 'pointer', opacity: '0.6' } } }} onClick={() => onClickDetailTask(task.id)}>{task.data().title}</ListItemText>
                       <ListItemText sx={{ ml: 1, maxWidth: '280px' }}>{task.data().category}</ListItemText>
                       <ListItemText sx={{ maxWidth: '280px' }}>{task.data().status}</ListItemText>
