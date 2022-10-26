@@ -1,14 +1,19 @@
 import * as React from 'react';
 import { useRouter } from 'next/router';
+import { Avatar, Box, Divider, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Popper, Typography, unstable_createMuiStrictModeTheme } from '@mui/material';
+import { AccountCircle, AirlineSeatIndividualSuiteSharp, Logout, Person, Settings } from '@mui/icons-material';
+import { useAuthContext } from '../context/AuthContext';
+import { auth, db } from '../firebase/firebase';
+import { doc, DocumentData, getDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
-import { AccountCircle, Logout, Person, Settings } from '@mui/icons-material';
-import { Avatar, Box, Divider, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Popper, Typography } from '@mui/material';
 
 export const MenuItems = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const popOpen = Boolean(anchorEl);
+  const [user, setUser] = React.useState<DocumentData | undefined>(undefined);
+  const authContext = useAuthContext();
   const router = useRouter();
+  const { isReady } = useRouter();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -18,6 +23,16 @@ export const MenuItems = () => {
     await signOut(auth);
     await router.push('/login');
   }
+
+  React.useEffect(() => {
+    if(isReady && authContext.user) {
+      const ref = doc(db, 'users', authContext.user.uid);
+      const docSnap = getDoc(ref);
+      docSnap.then((snap) => {
+        setUser(snap.data());
+      })
+    }
+  }, [isReady, authContext])
 
   return (
     <>
@@ -32,8 +47,8 @@ export const MenuItems = () => {
                 <Avatar />
                 <Box ml={2}>
                   {/* 下記 2行の中身は、ユーザー機能実装後 */}                
-                  <Typography>takanori</Typography>
-                  <Typography>demo.demo@demo.com</Typography>
+                  <Typography>{user ? user.nickname : 'unknown'}</Typography>
+                  <Typography>{user ? user.email : 'unknown'}</Typography>
                 </Box>
               </ListItem>
               <Divider />
