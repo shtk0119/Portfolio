@@ -15,7 +15,7 @@ type Task = {
   status: string;
   start_date: string;
   end_date: string;
-  text: string | null;
+  text: string;
 }
 
 const Today = new Date();
@@ -26,7 +26,7 @@ const defaultTask: Task = {
   status: '開始前',
   start_date: `${Today.getFullYear()}-${Today.getMonth() + 1}-${Today.getDate()}`,
   end_date: `${Today.getFullYear()}-${Today.getMonth() + 1}-${Today.getDate()}`,
-  text: null,
+  text: '',
 }
 
 const style = {
