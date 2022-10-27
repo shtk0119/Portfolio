@@ -3,14 +3,20 @@ import { useRouter } from 'next/router';
 import { auth } from '../firebase/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 
-const AuthContext = React.createContext({});
+type UserType = User | null;
+
+type AuthContextProps = {
+  user: UserType;
+}
+
+const AuthContext = React.createContext<Partial<AuthContextProps>>({});
 
 export const useAuthContext = () => {
   return React.useContext(AuthContext);
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = React.useState<User | null>(null);
+  const [user, setUser] = React.useState<UserType>(null);
   const router = useRouter();
   const isAvailableForViewing = router.pathname === '/' || router.pathname === '/login' || router.pathname === '/signup' || router.pathname === '/404';
 
