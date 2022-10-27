@@ -1,6 +1,7 @@
 import * as React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Box, Button, FormControl, Input, InputLabel, Link, Stack, Typography } from '@mui/material';
+import { Box, Button, FormControl, Input, InputLabel, Stack, Typography } from '@mui/material';
 import { auth } from '../firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
@@ -25,33 +26,14 @@ const Login = () => {
 
   return (
     <Box minHeight='100vh'>
-      <Stack
-        maxWidth='400px'
-        m='0 auto'
-        p='48px 24px'
-        display='flex'
-        alignItems='center'
-        justifyContent='center'
-      >
+      <Stack maxWidth='400px' m='0 auto' p='48px 24px' display='flex' alignItems='center' justifyContent='center'>
         <Box>
-          <Typography
-            component='h2'
-            fontSize='42px'
-            fontWeight='bold'
-            fontFamily='"Oleo Script", cursive'
-          >
+          <Typography component='h2' fontSize='42px' fontWeight='bold' fontFamily='"Oleo Script", cursive'>
             Login
           </Typography>
         </Box>
 
-        <Box
-          width='100%'
-          bgcolor='lightgray'
-          mt='48px'
-          p='32px'
-          borderRadius='10px'
-        >
-
+        <Box width='100%' bgcolor='lightgray' mt='48px' p='32px' borderRadius='10px'>
           <form onSubmit={handleSubmit}>
             <FormControl fullWidth>
               <InputLabel>メールアドレス</InputLabel>
@@ -67,10 +49,9 @@ const Login = () => {
               Login
             </Button>
           </form>
-
           <Box mt='32px' textAlign='center'>
             <Typography fontSize='14px' color='primary'>
-              <Link href='/signup' underline='none'>
+              <Link href='/signup'>
                 アカウントを作成
               </Link>
             </Typography>

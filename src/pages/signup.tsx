@@ -1,8 +1,9 @@
 import * as React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Box, Button, FormControl, Input, InputLabel, Link, Stack, Typography } from '@mui/material';
+import { Box, Button, FormControl, Input, InputLabel, Stack, Typography } from '@mui/material';
 import { auth } from '../firebase/firebase';
-import {  createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const Signup = () => {
   const [email, setEmail] = React.useState<string>('');
@@ -70,7 +71,7 @@ const Signup = () => {
 
           <Box mt='32px' textAlign='center'>
             <Typography fontSize='14px' color='primary'>
-              <Link href='/login' underline='none'>
+              <Link href='/login'>
                 アカウントをお持ちの方
               </Link>
             </Typography>
