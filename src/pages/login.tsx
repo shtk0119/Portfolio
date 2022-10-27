@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import { Box, Button, FormControl, Input, InputLabel, Stack, Typography } from '@mui/material';
 import { auth } from '../firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -8,20 +8,16 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 const Login = () => {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
-  const router = useRouter();
 
-  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  }
-
-  const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  }
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await signInWithEmailAndPassword(auth, email, password);
-    router.push('/task');
+  const onSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      Router.push('/task');
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
   }
 
   return (
@@ -34,17 +30,17 @@ const Login = () => {
         </Box>
 
         <Box width='100%' bgcolor='lightgray' mt='48px' p='32px' borderRadius='10px'>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={onSubmitLogin}>
             <FormControl fullWidth>
               <InputLabel>メールアドレス</InputLabel>
-              <Input name='email' type='email' onChange={handleChangeEmail} />
+              <Input name='email' type='email' onChange={(e) => setEmail(e.target.value)} />
             </FormControl>
 
             <FormControl sx={{ mt: 3 }} fullWidth>
               <InputLabel>パスワード</InputLabel>
-              <Input name='password' type='password' onChange={handleChangePassword} />
+              <Input name='password' type='password' onChange={(e) => setPassword(e.target.value)} />
             </FormControl>
-
+            
             <Button sx={{ bgcolor: '#4299e1', fontWeight: 'bold', textTransform: 'none', mt: 6 }} type='submit' variant='contained' fullWidth>
               Login
             </Button>
