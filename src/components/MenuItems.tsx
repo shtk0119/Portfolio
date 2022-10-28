@@ -2,7 +2,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Avatar, Box, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Popper, Typography } from '@mui/material';
-import { AccountCircle, Logout, Person, Settings } from '@mui/icons-material';
+import { AccountCircle, Logout, Settings } from '@mui/icons-material';
 import { useAuthContext } from '../context/AuthContext';
 import { auth, db } from '../firebase/firebase';
 import { doc, DocumentData, getDoc } from 'firebase/firestore';
@@ -51,18 +51,7 @@ export const MenuItems = () => {
               </ListItem>
               <Divider />
               <ListItem disablePadding>
-                <Link href='#' color='default'>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Person />
-                    </ListItemIcon>
-                    <ListItemText primary='プロフィール' />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-              <Divider />
-              <ListItem disablePadding>
-                <Link href='#' color='default'>
+                <Link href='/account' color='default'>
                   <ListItemButton>
                     <ListItemIcon>
                       <Settings />
