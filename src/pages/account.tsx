@@ -5,21 +5,22 @@ import { Header } from '../components/Header';
 import { Avatar, Box, Button, CssBaseline, Divider, Input, InputLabel, Tab, Tabs, Typography } from '@mui/material';
 import { useAuthContext } from '../context/AuthContext';
 import { deleteDoc, doc, DocumentData, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase/firebase';
+import { db, storage } from '../firebase/firebase';
 import { deleteUser, EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } from 'firebase/auth';
+import { getDownloadURL, ref } from 'firebase/storage';
 
 const Account = () => {
   const [value, setValue] = React.useState('1');
   const { user } = useAuthContext();
-  const [userData, setUserData] = React.useState<DocumentData | undefined>({nickname: '', email: '', password: ''});
-  const [editUserData, setEditUserData] = React.useState<DocumentData | undefined>({nickname: '', email: '', password: ''});
-  const [image, setImage] = React.useState();
+  const [userData, setUserData] = React.useState<DocumentData | undefined>();
+  const [editUserData, setEditUserData] = React.useState<DocumentData | undefined>();
+  const [image, setImage] = React.useState<string>('');
   const [isEdit, setIsEdit] = React.useState<{email: boolean, password: boolean}>({email: false, password: false});
 
   const onClickSaveNickname = () => {
     if (user) {
-      const ref = doc(db, 'users', user.uid);
-      updateDoc(ref, {
+      const docRef = doc(db, 'users', user.uid);
+      updateDoc(docRef, {
         nickname: userData?.nickname,
       })
     }
@@ -32,8 +33,8 @@ const Account = () => {
       .then(() => {
         updateEmail(user, editUserData?.email)
         .then(() => {
-          const ref = doc(db, 'users', user.uid);
-          updateDoc(ref, {
+          const docRef = doc(db, 'users', user.uid);
+          updateDoc(docRef, {
             email: editUserData?.email,
           });
           alert('メールアドレスを更新しました。');
@@ -56,8 +57,8 @@ const Account = () => {
       .then(() => {
         updatePassword(user, editUserData?.password)
         .then(() => {
-          const ref = doc(db, 'users', user.uid);
-          updateDoc(ref, {
+          const docRef = doc(db, 'users', user.uid);
+          updateDoc(docRef, {
             password: editUserData?.password,
           });
           alert('パスワードを更新しました。')
@@ -81,8 +82,8 @@ const Account = () => {
       .then(() => {
         deleteUser(user)
         .then(() => {
-          const ref = doc(db, 'users', user.uid);
-          deleteDoc(ref);
+          const docRef = doc(db, 'users', user.uid);
+          deleteDoc(docRef);
           alert('アカウントを削除しました。');
           Router.push('/signup');
         })
@@ -98,18 +99,27 @@ const Account = () => {
 
   React.useEffect(() => {
     if (user) {
-      const ref = doc(db, 'users', user.uid);
-      const docSnap = getDoc(ref);
+      const docRef = doc(db, 'users', user.uid);
+      const docSnap = getDoc(docRef);
       docSnap.then((user) => {
         setUserData(user.data());
         setEditUserData(user.data());
       });
 
-      onSnapshot(ref, (snapShot) => {
+      onSnapshot(docRef, (snapShot) => {
         setUserData(snapShot.data())
       })
     }
   }, [user])
+
+  React.useEffect(() => {
+    if (userData) {
+      const pathReference = ref(storage, userData.image);
+      getDownloadURL(pathReference).then((data) => {
+        setImage(data);
+      })
+    }
+  }, [userData])
 
   return (
     <Box display='flex'>
@@ -140,7 +150,7 @@ const Account = () => {
               <Typography variant='h6' fontWeight='bold' width='30%'>基本情報</Typography>
               <Box width='70%'>
                 <Box display='flex'>
-                  {image ? <Image src='' alt='avater' height={80} width={80} sx={{ borderRadius: '50%' }} /> : <Avatar />}
+                  {image ? <Image src={image} alt='avater' height={50} width={50} style={{ borderRadius: '50%' }} /> : <Avatar />}
                   <InputLabel sx={{ color: '#1976D2', ml: 2, p: 1, borderRadius: 2, display: 'flex', alignItems: 'center', cursor: 'pointer', '&:hover': { bgcolor: 'rgba(25, 118, 210, 0.04)' } }}>
                     Change
                     <Input sx={{ display: 'none' }} type='file' />
