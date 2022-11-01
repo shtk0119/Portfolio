@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Router from 'next/router';
+import Image from 'next/image';
 import { Header } from '../components/Header';
-import { Avatar, Box, Button, CssBaseline, Divider, Input, Tab, Tabs, Typography } from '@mui/material';
+import { Avatar, Box, Button, CssBaseline, Divider, Input, InputLabel, Tab, Tabs, Typography } from '@mui/material';
 import { useAuthContext } from '../context/AuthContext';
 import { deleteDoc, doc, DocumentData, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
@@ -12,6 +13,7 @@ const Account = () => {
   const { user } = useAuthContext();
   const [userData, setUserData] = React.useState<DocumentData | undefined>({nickname: '', email: '', password: ''});
   const [editUserData, setEditUserData] = React.useState<DocumentData | undefined>({nickname: '', email: '', password: ''});
+  const [image, setImage] = React.useState();
   const [isEdit, setIsEdit] = React.useState<{email: boolean, password: boolean}>({email: false, password: false});
 
   const onClickSaveNickname = () => {
@@ -138,8 +140,11 @@ const Account = () => {
               <Typography variant='h6' fontWeight='bold' width='30%'>基本情報</Typography>
               <Box width='70%'>
                 <Box display='flex'>
-                  <Avatar />
-                  <Button sx={{ ml: 3, fontWeight: 'bold', textTransform: 'none' }} disableRipple>変更</Button>
+                  {image ? <Image src='' alt='avater' height={80} width={80} sx={{ borderRadius: '50%' }} /> : <Avatar />}
+                  <InputLabel sx={{ color: '#1976D2', ml: 2, p: 1, borderRadius: 2, display: 'flex', alignItems: 'center', cursor: 'pointer', '&:hover': { bgcolor: 'rgba(25, 118, 210, 0.04)' } }}>
+                    Change
+                    <Input sx={{ display: 'none' }} type='file' />
+                  </InputLabel>
                 </Box>
                 <Box display='flex' mt={5}>
                   <Input sx={{ width: '70%', p: '0 8px', border: '1px solid #00000033', borderRadius: 2 }} type='text' disableUnderline placeholder='ニックネーム' value={editUserData?.nickname} onChange={(e) => setEditUserData({ ...editUserData, nickname: e.target.value })} />
