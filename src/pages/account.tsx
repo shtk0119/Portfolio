@@ -7,15 +7,31 @@ import { useAuthContext } from '../context/AuthContext';
 import { deleteDoc, doc, DocumentData, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db, storage } from '../firebase/firebase';
 import { deleteUser, EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } from 'firebase/auth';
-import { getDownloadURL, ref } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 const Account = () => {
   const [value, setValue] = React.useState('1');
   const { user } = useAuthContext();
-  const [userData, setUserData] = React.useState<DocumentData | undefined>();
-  const [editUserData, setEditUserData] = React.useState<DocumentData | undefined>();
+  const [userData, setUserData] = React.useState<DocumentData | undefined>({ image: '', nickname: '', email: '', password: '' });
+  const [editUserData, setEditUserData] = React.useState<DocumentData | undefined>({ image: '', nickname: '', email: '', password: '' });
   const [image, setImage] = React.useState<string>('');
-  const [isEdit, setIsEdit] = React.useState<{email: boolean, password: boolean}>({email: false, password: false});
+  const [file, setFile] = React.useState<FileList | null>(null);
+  const [isEdit, setIsEdit] = React.useState<{email: boolean, password: boolean, image: boolean}>({email: false, password: false, image: false});
+  
+  const onChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target.files);
+    setIsEdit({ ...isEdit, image: true });
+  }
+
+  const onClickSaveImage = () => {
+    if (file) {
+      const storageRef = ref(storage, `images/${file[0].name}`);
+      uploadBytes(storageRef, file[0])
+      .then((snapShot) => {
+        console.log(snapShot)
+      })
+    }
+  }
 
   const onClickSaveNickname = () => {
     if (user) {
@@ -113,8 +129,8 @@ const Account = () => {
   }, [user])
 
   React.useEffect(() => {
-    if (userData) {
-      const pathReference = ref(storage, userData.image);
+    if (userData?.image !== '') {
+      const pathReference = ref(storage, userData?.image);
       getDownloadURL(pathReference).then((data) => {
         setImage(data);
       })
@@ -153,8 +169,11 @@ const Account = () => {
                   {image ? <Image src={image} alt='avater' height={50} width={50} style={{ borderRadius: '50%' }} /> : <Avatar />}
                   <InputLabel sx={{ color: '#1976D2', ml: 2, p: 1, borderRadius: 2, display: 'flex', alignItems: 'center', cursor: 'pointer', '&:hover': { bgcolor: 'rgba(25, 118, 210, 0.04)' } }}>
                     Change
-                    <Input sx={{ display: 'none' }} type='file' />
+                    <Input sx={{ display: 'none' }} type='file' onChange={onChangeImage} />
                   </InputLabel>
+
+                  {isEdit.image && <Button sx={{ ml: 3 }} onClick={onClickSaveImage}>保存</Button>}
+
                 </Box>
                 <Box display='flex' mt={5}>
                   <Input sx={{ width: '70%', p: '0 8px', border: '1px solid #00000033', borderRadius: 2 }} type='text' disableUnderline placeholder='ニックネーム' value={editUserData?.nickname} onChange={(e) => setEditUserData({ ...editUserData, nickname: e.target.value })} />
