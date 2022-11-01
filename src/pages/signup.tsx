@@ -20,6 +20,7 @@ const Signup = () => {
         nickname: nickname,
         email: email,
         password: password,
+        image: 'images/default.png',
       });
       Router.push('/task');
     })
