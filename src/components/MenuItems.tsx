@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { AccountCircle, Logout, Settings } from '@mui/icons-material';
 import { useAuthContext } from '../contexts/AuthContext';
-import { auth, db } from '../firebase/firebase';
+import { auth, db } from '../libs/firebase/firebase';
 import { doc, DocumentData, getDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 
@@ -68,9 +68,7 @@ export const MenuItems = () => {
                 <Typography>
                   {userData ? userData.nickname : 'unknown'}
                 </Typography>
-                <Typography>
-                  {userData ? userData.email : 'unknown'}
-                </Typography>
+                <Typography>{userData ? userData.email : 'unknown'}</Typography>
               </Box>
             </ListItem>
             <Divider />

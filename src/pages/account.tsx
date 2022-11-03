@@ -23,7 +23,7 @@ import {
   onSnapshot,
   updateDoc,
 } from 'firebase/firestore';
-import { db, storage } from '../firebase/firebase';
+import { db, storage } from '../libs/firebase/firebase';
 import {
   deleteUser,
   EmailAuthProvider,
