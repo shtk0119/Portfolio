@@ -1,9 +1,10 @@
-import { Link, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import Link from 'next/link';
+import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { AddHome, Dashboard, Newspaper, Search } from '@mui/icons-material';
 
 export const ListItems = (
   <>
-    <Link href='/task' underline='none' color='default'>
+    <Link href='/task' color='default'>
       <ListItemButton>
         <ListItemIcon>
           <Dashboard />
@@ -12,7 +13,7 @@ export const ListItems = (
       </ListItemButton>
     </Link>
 
-    <Link href='#' underline='none' color='default'>
+    <Link href='#' color='default'>
       <ListItemButton>
         <ListItemIcon>
           <AddHome />
@@ -21,7 +22,7 @@ export const ListItems = (
       </ListItemButton>
     </Link>
 
-    <Link href='/search' underline='none' color='default'>
+    <Link href='/search' color='default'>
       <ListItemButton>
         <ListItemIcon>
           <Search />
@@ -30,7 +31,7 @@ export const ListItems = (
       </ListItemButton>
     </Link>
 
-    <Link href='#' underline='none' color='default'>
+    <Link href='#' color='default'>
       <ListItemButton>
         <ListItemIcon>
           <Newspaper />
