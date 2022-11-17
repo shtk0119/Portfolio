@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Router from 'next/router';
 import Image from 'next/image';
-import { Header } from '../components/Header';
+import { Header } from '../src/components/Header';
 import {
   Avatar,
   Box,
@@ -14,7 +14,7 @@ import {
   Tabs,
   Typography,
 } from '@mui/material';
-import { useAuthContext } from '../contexts/AuthContext';
+import { useAuthContext } from '../src/contexts/AuthContext';
 import {
   deleteDoc,
   doc,
@@ -23,7 +23,7 @@ import {
   onSnapshot,
   updateDoc,
 } from 'firebase/firestore';
-import { db, storage } from '../libs/firebase/firebase';
+import { db, storage } from '../src/libs/firebase/firebase';
 import {
   deleteUser,
   EmailAuthProvider,
@@ -36,22 +36,11 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 const Account = () => {
   const [value, setValue] = React.useState('1');
   const { user } = useAuthContext();
-  const [userData, setUserData] = React.useState<DocumentData | undefined>({
-    image: '',
-    nickname: '',
-    email: '',
-    password: '',
-  });
-  const [editUserData, setEditUserData] = React.useState<
-    DocumentData | undefined
-  >({ image: '', nickname: '', email: '', password: '' });
+  const [userData, setUserData] = React.useState<DocumentData | undefined>({ image: '', nickname: '', email: '', password: '' });
+  const [editUserData, setEditUserData] = React.useState<DocumentData | undefined>({ image: '', nickname: '', email: '', password: '' });
   const [image, setImage] = React.useState<string>('');
   const [file, setFile] = React.useState<FileList | null>(null);
-  const [isEdit, setIsEdit] = React.useState<{
-    email: boolean;
-    password: boolean;
-    image: boolean;
-  }>({ email: false, password: false, image: false });
+  const [isEdit, setIsEdit] = React.useState<{ email: boolean, password: boolean, image: boolean }>({ email: false, password: false, image: false });
 
   const onChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFile(e.target.files);

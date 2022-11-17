@@ -10,26 +10,17 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { auth, db } from '../libs/firebase/firebase';
-import { doc, setDoc } from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../src/libs/firebase/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-const Signup = () => {
-  const [nickname, setNickname] = React.useState<string>('');
+const Login = () => {
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
 
-  const onSugmitSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        setDoc(doc(db, 'users', user.uid), {
-          nickname: nickname,
-          email: email,
-          password: password,
-          image: 'images/default.png',
-        });
+    await signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
         Router.push('/task');
       })
       .catch((error) => {
@@ -54,7 +45,7 @@ const Signup = () => {
             fontWeight="bold"
             fontFamily='"Oleo Script", cursive'
           >
-            Sign up
+            Login
           </Typography>
         </Box>
 
@@ -65,17 +56,8 @@ const Signup = () => {
           p="32px"
           borderRadius="10px"
         >
-          <form onSubmit={onSugmitSignup}>
+          <form onSubmit={onSubmitLogin}>
             <FormControl fullWidth>
-              <InputLabel>ニックネーム</InputLabel>
-              <Input
-                name="nickname"
-                type="text"
-                onChange={(e) => setNickname(e.target.value)}
-              />
-            </FormControl>
-
-            <FormControl sx={{ mt: 3 }} fullWidth>
               <InputLabel>メールアドレス</InputLabel>
               <Input
                 name="email"
@@ -104,13 +86,12 @@ const Signup = () => {
               variant="contained"
               fullWidth
             >
-              Sign up
+              Login
             </Button>
           </form>
-
           <Box mt="32px" textAlign="center">
             <Typography fontSize="14px" color="primary">
-              <Link href="/login">アカウントをお持ちの方</Link>
+              <Link href="/signup">アカウントを作成</Link>
             </Typography>
           </Box>
         </Box>
@@ -119,4 +100,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

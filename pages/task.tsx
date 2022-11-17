@@ -1,7 +1,7 @@
 import { Box, CssBaseline } from "@mui/material";
-import { Header } from "../components/Header";
+import { Header } from "../src/components/Header";
 // import { Taskboard } from "../components/Taskboard";
-import { TaskList } from "../components/TaskList";
+import { TaskList } from "../src/components/TaskList";
 
 const Task = () => {
   return (

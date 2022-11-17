@@ -1,9 +1,9 @@
 import * as React from 'react';
-import '../styles/globals.css';
+import '../src/styles/globals.css';
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
-import { AuthProvider } from '../contexts/AuthContext';
+import { AuthProvider } from '../src/contexts/AuthContext';
 import { Router } from 'next/router';
 import { PropagateLoader } from 'react-spinners';
 
