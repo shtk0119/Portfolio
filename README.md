@@ -40,7 +40,7 @@ Test User : test@test.com
 - Next.jsを用いてSPAを実現。
 - UIUX・デザインにこだわり、より少ない導線・心地よい使用感でのサービス提供の実現。
 - レスポンシブデザインに対応している。
-- 外部API（HotPepperAPI、GoogleAPI、firebase）を用いて機能を実現している。
+- 外部API（GoogleAPI、firebase）を用いて機能を実現している。
 
 ## Architecture
 
